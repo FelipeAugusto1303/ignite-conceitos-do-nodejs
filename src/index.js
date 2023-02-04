@@ -39,8 +39,8 @@ app.post("/users", (request, response) => {
   const { name, username } = request.body;
   const id = uuidv4();
 
-  if(users.find(user => user.username === username)){
-    return response.status(400).json({error:"Username ja existe!"});
+  if (users.find((user) => user.username === username)) {
+    return response.status(400).json({ error: "Username ja existe!" });
   }
 
   const user = {
@@ -48,7 +48,7 @@ app.post("/users", (request, response) => {
     name,
     username,
     todos: [],
-  }
+  };
 
   users.push(user);
 
@@ -88,13 +88,15 @@ app.put("/todos/:id", checksExistsUserAccount, (request, response) => {
 
   const index = getTodoIndex(user.todos, id, response);
 
-  if(!title || !deadline){
-    return response.status(404).json({error: "problema no corpo da requisição"})
+  if (!title || !deadline) {
+    return response
+      .status(404)
+      .json({ error: "problema no corpo da requisição" });
   }
 
   user.todos[index].title = title;
   user.todos[index].deadline = new Date(deadline);
-  
+
   return response.status(200).send();
 });
 
@@ -106,12 +108,12 @@ app.patch("/todos/:id/done", checksExistsUserAccount, (request, response) => {
 
   user.todos[index].done = true;
 
-  return response.status(200).send();
+  return response.status(201).send();
 });
 
 app.delete("/todos/:id", checksExistsUserAccount, (request, response) => {
-  const {id} = request.params;
-  const {user} = request;
+  const { id } = request.params;
+  const { user } = request;
 
   const index = getTodoIndex(user.todos, id, response);
 
