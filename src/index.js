@@ -40,17 +40,19 @@ app.post("/users", (request, response) => {
   const id = uuidv4();
 
   if(users.find(user => user.username === username)){
-    return response.status(400).json({"error":"Username ja existe!"});
+    return response.status(400).json({error:"Username ja existe!"});
   }
 
-  users.push({
+  const user = {
     id,
     name,
     username,
     todos: [],
-  });
+  }
 
-  return response.status(201).send();
+  users.push(user);
+
+  return response.status(201).json(user);
 });
 
 app.get("/todos", checksExistsUserAccount, (request, response) => {
@@ -75,7 +77,7 @@ app.post("/todos", checksExistsUserAccount, (request, response) => {
 
   user.todos.push(todoProcedure);
 
-  return response.status(201).send();
+  return response.status(201).json(todoProcedure);
 });
 
 app.put("/todos/:id", checksExistsUserAccount, (request, response) => {
