@@ -88,14 +88,14 @@ app.put("/todos/:id", checksExistsUserAccount, (request, response) => {
 
   const index = getTodoIndex(user.todos, id, response);
 
-  if (title) {
-    user.todos[index].title = title;
-  }
-  if (deadline) {
-    user.todos[index].deadline = new Date(deadline);
+  if(!title || !deadline){
+    return response.status(404).json({error: "problema no corpo da requisição"})
   }
 
-  return response.status(201).send();
+  user.todos[index].title = title;
+  user.todos[index].deadline = new Date(deadline);
+  
+  return response.status(200).send();
 });
 
 app.patch("/todos/:id/done", checksExistsUserAccount, (request, response) => {
@@ -104,9 +104,9 @@ app.patch("/todos/:id/done", checksExistsUserAccount, (request, response) => {
 
   const index = getTodoIndex(user.todos, id, response);
 
-  user.todos[index].done = false;
+  user.todos[index].done = true;
 
-  return response.status(204).send();
+  return response.status(200).send();
 });
 
 app.delete("/todos/:id", checksExistsUserAccount, (request, response) => {
