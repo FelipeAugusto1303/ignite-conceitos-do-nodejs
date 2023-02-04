@@ -97,7 +97,7 @@ app.put("/todos/:id", checksExistsUserAccount, (request, response) => {
   user.todos[index].title = title;
   user.todos[index].deadline = new Date(deadline);
 
-  return response.status(200).send();
+  return response.status(200).json(user.todos[index]);
 });
 
 app.patch("/todos/:id/done", checksExistsUserAccount, (request, response) => {
@@ -108,7 +108,7 @@ app.patch("/todos/:id/done", checksExistsUserAccount, (request, response) => {
 
   user.todos[index].done = true;
 
-  return response.status(201).send();
+  return response.status(200).json(user.todos[index]);
 });
 
 app.delete("/todos/:id", checksExistsUserAccount, (request, response) => {
