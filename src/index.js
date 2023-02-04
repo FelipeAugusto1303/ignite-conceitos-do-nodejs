@@ -32,7 +32,7 @@ function getTodoIndex(todoList, id, response) {
   });
   if (result !== null) {
     return result;
-  } else return response.status(400).json({ error: "Tarefa inexistente!" });
+  } else return response.status(404).json({ error: "Tarefa inexistente!" });
 }
 
 app.post("/users", (request, response) => {
@@ -104,9 +104,7 @@ app.patch("/todos/:id/done", checksExistsUserAccount, (request, response) => {
 
   const index = getTodoIndex(user.todos, id, response);
 
-  if (!user.todos[index].done) {
-    user.todos[index].done = true;
-  } else user.todos[index].done = false;
+  user.todos[index].done = false;
 
   return response.status(204).send();
 });
